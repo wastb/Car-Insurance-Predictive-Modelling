@@ -11,7 +11,7 @@ def load_data(path):
         df = pd.read_csv(
             path,
             dtype={37: object},              
-            na_values=['NA', 'null', ' ', '']    #treat blanks as missing values
+            na_values=['NA', 'null', ' ','  ', '']    #treat blanks as missing values
         )
         print("Data Loaded Successfully")
         return df

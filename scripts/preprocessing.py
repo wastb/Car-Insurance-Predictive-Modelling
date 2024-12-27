@@ -23,17 +23,18 @@ class DataPreprocessing:
         columns_to_drop = ['Language','Country','ItemType','CrossBorder','NumberOfVehiclesInFleet',
                          'StatutoryClass','StatutoryRiskType', 'Model', 'Cylinders', 'cubiccapacity', 
                          'VehicleIntroDate','kilowatts','Bank','AccountType','mmcode','Title','VehicleIntroDate',
-                         'CustomValueEstimate','CapitalOutstanding']
+                         'CustomValueEstimate','CapitalOutstanding','WrittenOff','Rebuilt','Converted']
         
         self.data.drop(columns=columns_to_drop, inplace=True)
+
     
     def categorical_plot_1(self):
         categorical_columns = ['IsVATRegistered','Citizenship','Province','VehicleType','Gender',
-                               'AlarmImmobiliser','MaritalStatus','TrackingDevice','TermFrequency']
+                               'AlarmImmobiliser']
 
         plt.figure(figsize=(12,10))
         for i,col in enumerate(categorical_columns):
-            plt.subplot(3, 3, i + 1)
+            plt.subplot(2, 3, i + 1)
             self.data[col].value_counts().plot(kind='bar')
             plt.title(col)
             plt.xlabel('Value')
@@ -43,10 +44,10 @@ class DataPreprocessing:
         plt.show()
         
     def categorical_plot_2(self):
-        categorical_columns_1 = ['LegalType','MainCrestaZone','bodytype','NewVehicle', 'WrittenOff']
+        categorical_columns_2 = ['LegalType','MainCrestaZone','bodytype','NewVehicle','TrackingDevice','TermFrequency']
         
         plt.figure(figsize=(12,10))
-        for i,col in enumerate(categorical_columns_1):
+        for i,col in enumerate(categorical_columns_2):
             plt.subplot(2, 3, i + 1)
             self.data[col].value_counts().plot(kind='bar')
             plt.title(col)
@@ -57,11 +58,11 @@ class DataPreprocessing:
         plt.show()
         
     def categorical_plot_3(self):
-        categorical_columns_1 = ['Rebuilt', 'Converted','CoverGroup', 'Section', 'Product']
+        categorical_columns_3 = ['MaritalStatus','CoverGroup', 'Section', 'Product']
         
         plt.figure(figsize=(12,10))
-        for i,col in enumerate(categorical_columns_1):
-            plt.subplot(2, 3, i + 1)
+        for i,col in enumerate(categorical_columns_3):
+            plt.subplot(2, 2, i + 1)
             self.data[col].value_counts().plot(kind='bar')
             plt.title(col)
             plt.xlabel('Value')
@@ -89,7 +90,7 @@ class DataPreprocessing:
         Fill missing values with mode
         """
         columns = ['Gender','MaritalStatus','VehicleType','NumberOfDoors','bodytype',
-                               'NewVehicle', 'WrittenOff','Rebuilt', 'Converted','bodytype','make']
+                    'NewVehicle','bodytype','make','Citizenship']
         for col in columns:
             mode = self.data[col].mode()[0]
             self.data[col] = self.data[col].fillna(mode)

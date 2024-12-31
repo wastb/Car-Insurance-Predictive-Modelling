@@ -6,6 +6,40 @@ class DataPreprocessing:
     def __init__(self, data):
         self.data = data
 
+    def drop_highly_empty_columns(self):
+
+        # Calculate the percentage of missing values for each column
+        highly_null_columns = []
+        threshold = 0.5
+        for column in self.data.columns:
+            missing_percentage = self.data[column].isnull().sum() / len(self.data)
+            if missing_percentage > threshold:
+                highly_null_columns.append(column)
+
+        self.data.drop(columns=highly_null_columns, inplace=True)
+
+        print(f"Highly empty columns dropped: {highly_null_columns}")
+    
+        return self.data
+    
+    def impute_categorical_data(self):
+
+        # Impute missing values for categorical columns with the mode
+        categorical_cols = ['NewVehicle', 'AccountType', 'Bank', 'VehicleType', 
+                            'make', 'Model', 'mmcode', 'bodytype', 'Gender', 'MaritalStatus']
+
+        for col in categorical_cols:
+            self.data[col] = self.data[col].fillna(self.data[col].mode()[0])
+
+        return self.data
+
+    def impute_numerical_data(self):
+        # Impute missing values for numerical columns with the mean
+        numerical_cols = ['cubiccapacity', 'kilowatts', 'Cylinders', 'NumberOfDoors']
+        for col in numerical_cols:
+            self.data[col] = self.data[col].fillna(self.data[col].mean())
+
+        return self.data
 
     def to_datetime(self):
         """
